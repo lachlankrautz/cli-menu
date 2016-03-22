@@ -99,7 +99,6 @@ class CliMenu
 
         $this->terminal->setCanonicalMode();
         $this->terminal->disableCursor();
-        $this->terminal->clear();
     }
 
     /**
@@ -251,8 +250,11 @@ class CliMenu
      */
     protected function draw()
     {
-        $this->terminal->clean();
-        $this->terminal->moveCursorToTop();
+        if ($this->style->shouldClearTerminal()) {
+            $this->terminal->clean();
+        } else {
+            $this->terminal->clearFromSavedCursor();
+        }
 
         echo "\n\n";
 
@@ -341,8 +343,10 @@ class CliMenu
      */
     public function closeThis()
     {
-        $this->terminal->clean();
-        $this->terminal->moveCursorToTop();
+        if ($this->style->shouldClearTerminal()) {
+            $this->terminal->clean();
+        }
+
         $this->open = false;
     }
 }

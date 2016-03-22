@@ -77,6 +77,11 @@ class MenuStyle
     private $titleSeparator;
 
     /**
+     * @var bool
+     */
+    private $clearTerminal;
+
+    /**
      * @var string
      */
     private $allowedConsumer = 'PhpSchool\CliMenu\CliMenuBuilder';
@@ -135,6 +140,7 @@ class MenuStyle
      * @param string $itemExtra
      * @param bool $displaysExtra
      * @param string $titleSeparator
+     * @param bool $clearTerminal
      * @param TerminalInterface $terminal
      * @throws InvalidInstantiationException
      */
@@ -149,6 +155,7 @@ class MenuStyle
         $itemExtra = '✔',
         $displaysExtra = false,
         $titleSeparator = '=',
+        $clearTerminal = true,
         TerminalInterface $terminal = null
     ) {
         $builder = debug_backtrace();
@@ -166,6 +173,7 @@ class MenuStyle
         $this->itemExtra       = $itemExtra;
         $this->displaysExtra   = $displaysExtra;
         $this->titleSeparator  = $titleSeparator;
+        $this->clearTerminal   = $clearTerminal;
 
         $this->setUnselectedMarker($unselectedMarker);
         $this->setSelectedMarker($selectedMarker);
@@ -471,5 +479,21 @@ class MenuStyle
         $this->titleSeparator = $actionSeparator;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldClearTerminal()
+    {
+        return $this->clearTerminal;
+    }
+
+    /**
+     * @param bool $clearTerminal
+     */
+    public function setClearTerminal($clearTerminal)
+    {
+        $this->clearTerminal = $clearTerminal;
     }
 }

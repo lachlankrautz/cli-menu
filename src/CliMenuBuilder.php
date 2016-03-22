@@ -351,6 +351,16 @@ class CliMenuBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function noClear()
+    {
+        $this->style['clearTerminal'] = false;
+
+        return $this;
+    }
+
+    /**
      * @param TerminalInterface $terminal
      * @return $this
      */

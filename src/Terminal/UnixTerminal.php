@@ -47,6 +47,7 @@ class UnixTerminal implements TerminalInterface
     public function __construct()
     {
         $this->getOriginalConfiguration();
+        $this->saveCursorPosition();
     }
 
     /**
@@ -234,5 +235,38 @@ class UnixTerminal implements TerminalInterface
             $this->moveCursorToRow($rowNum);
             $this->clearLine();
         }
+
+        $this->moveCursorToTop();
+    }
+
+    /**
+     * Save the position of the cursor
+     *
+     * @return void
+     */
+    public function saveCursorPosition()
+    {
+        echo "\033[s";
+    }
+
+    /**
+     * Restore a previously saved cusror position
+     *
+     * @return void
+     */
+    public function restoreCursorPosition()
+    {
+        echo "\033[u";
+    }
+
+    /**
+     * Clear the terminal from the last saved cursor position
+     *
+     * @return void
+     */
+    public function clearFromSavedCursor()
+    {
+        $this->restoreCursorPosition();
+        echo "\033[J";
     }
 }

@@ -108,4 +108,25 @@ interface TerminalInterface
      * @return string
      */
     public function getKeyedInput();
+
+    /**
+     * Save the current cursor position
+     *
+     * @return void
+     */
+    public function saveCursorPosition();
+
+    /**
+     * Restore cursor to previously saved cursor position
+     *
+     * @return void
+     */
+    public function restoreCursorPosition();
+
+    /**
+     * Clear the terminal from the last saved cursor position
+     *
+     * @return void
+     */
+    public function clearFromSavedCursor();
 }
