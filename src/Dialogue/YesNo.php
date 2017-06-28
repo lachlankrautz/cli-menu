@@ -2,17 +2,53 @@
 
 namespace PhpSchool\CliMenu\Dialogue;
 
+use PhpSchool\CliMenu\CliMenu;
+use PhpSchool\CliMenu\MenuStyle;
+use PhpSchool\CliMenu\Terminal\TerminalInterface;
+
 /**
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
 class YesNo extends Dialogue
 {
 
+    /**
+     * @var string
+     */
     private $yesText = 'Yes';
 
+    /**
+     * @var string
+     */
     private $noText = 'No';
 
+    /**
+     * @var bool
+     */
     private $optionValue = false;
+
+    /**
+     * @var callable
+     */
+    private $callback;
+
+    /**
+     * @param CliMenu $parentMenu
+     * @param MenuStyle $menuStyle
+     * @param TerminalInterface $terminal
+     * @param string $text
+     * @param callable $callback
+     */
+    public function __construct(
+        CliMenu $parentMenu,
+        MenuStyle $menuStyle,
+        TerminalInterface $terminal,
+        $text,
+        callable $callback
+    ) {
+        parent::__construct($parentMenu, $menuStyle, $terminal, $text);
+        $this->callback = $callback;
+    }
 
     public function setYesText($text)
     {
@@ -28,17 +64,17 @@ class YesNo extends Dialogue
         return $this;
     }
 
-    public function getYesText()
+    private function getYesText()
     {
         return sprintf(' <%s> ', $this->yesText);
     }
 
-    public function getNoText()
+    private function getNoText()
     {
         return sprintf(' <%s> ', $this->noText);
     }
 
-    private function setOptionValue(bool $value)
+    private function setOptionValue($value)
     {
         $this->optionValue = $value;
 
@@ -124,9 +160,8 @@ class YesNo extends Dialogue
      *
      * The YesNO dialog box is displayed and the option value is passed to the callback function
      *
-     * @param $callable
      */
-    public function display($callable)
+    public function display()
     {
         $this->assertMenuOpen();
         $this->displayBody();
@@ -140,6 +175,7 @@ class YesNo extends Dialogue
             $input = $this->terminal->getKeyedInput();
         }
         $this->parentMenu->redraw();
-        $callable($this->getOptionValue());
+        $callback = $this->callback;
+        $callback($this->getOptionValue());
     }
 }

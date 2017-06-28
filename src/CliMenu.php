@@ -286,6 +286,7 @@ class CliMenu
 
         foreach ($frame->getRows() as $row) {
             echo $row;
+            //file_put_contents(__DIR__ . '/../out.log', $row, FILE_APPEND);
         }
 
         $this->currentFrame = $frame;
@@ -438,7 +439,7 @@ class CliMenu
      * @param string $text
      * @return YesNo
      */
-    public function yesNo($text)
+    public function yesNo($text, callable $callable)
     {
         if (strpos($text, "\n") !== false) {
             throw new \InvalidArgumentException;
@@ -448,6 +449,6 @@ class CliMenu
             ->setBg('yellow')
             ->setFg('red');
 
-        return new YesNo($this, $style, $this->terminal, $text);
+        return new YesNo($this, $style, $this->terminal, $text, $callable);
     }
 }

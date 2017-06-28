@@ -3,6 +3,7 @@
 namespace PhpSchool\CliMenuTest;
 
 use PhpSchool\CliMenu\CliMenu;
+use PhpSchool\CliMenu\Dialogue\YesNo;
 use PhpSchool\CliMenu\Exception\MenuNotOpenException;
 use PhpSchool\CliMenu\MenuItem\LineBreakItem;
 use PhpSchool\CliMenu\MenuItem\SelectableItem;
@@ -164,6 +165,14 @@ class CliMenuTest extends PHPUnit_Framework_TestCase
         $this->expectException(\InvalidArgumentException::class);
         $menu = new CliMenu('PHP School FTW', []);
         $menu->confirm("Foo\nBar");
+    }
+
+    public function testYesNoThrowsExceptionIfParameterContainsNewline()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $menu = new CliMenu('PHP School FTW', []);
+        $menu->yesNo("Foo\nBar", function () {
+        });
     }
 
     public function testThrowsExceptionIfTerminalIsNotValidTTY()
